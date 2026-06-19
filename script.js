@@ -254,8 +254,12 @@ function drawImageCover(ctx,img,dx,dy,dw,dh){
 }
 function applyFilter(img,w,h,f){
     const c=document.createElement('canvas');c.width=w;c.height=h;
-    const x=c.getContext('2d');if(f)x.filter=f;
-    drawImageCover(x,img,0,0,w,h);return c;
+    const x=c.getContext('2d');
+    x.imageSmoothingEnabled=true;
+    x.imageSmoothingQuality='high';
+    if(f)x.filter=f;
+    drawImageCover(x,img,0,0,w,h);
+    return c;
 }
 function showScreen(id){
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -313,15 +317,24 @@ document.addEventListener('DOMContentLoaded',()=>{
     ══════════════════════════════════════ */
     async function startCamera(){
         if(stream){stream.getTracks().forEach(t=>t.stop());}
-        try{
-            stream=await navigator.mediaDevices.getUserMedia({
-                video:{facingMode:'user',width:{ideal:1280},height:{ideal:960}},audio:false
-            });
-            document.getElementById('video').srcObject=stream;
-        }catch(e){
-            alert('⚠️ Camera permission denied. Please allow access and try again.');
-            console.error(e);
+        // Try highest quality camera available, fall back gracefully
+        const constraints=[
+            {facingMode:'user',width:{ideal:3840},height:{ideal:2160}},  // 4K
+            {facingMode:'user',width:{ideal:1920},height:{ideal:1080}},  // 1080p
+            {facingMode:'user',width:{ideal:1280},height:{ideal:720}},   // 720p
+            {facingMode:'user'},                                          // fallback
+        ];
+        for(const vc of constraints){
+            try{
+                stream=await navigator.mediaDevices.getUserMedia({video:vc,audio:false});
+                document.getElementById('video').srcObject=stream;
+                const track=stream.getVideoTracks()[0];
+                const settings=track.getSettings();
+                console.log(`📷 Camera: ${settings.width}×${settings.height}`);
+                return;
+            }catch(e){ /* try next */ }
         }
+        alert('⚠️ Camera permission denied or unavailable. Please allow access and try again.');
     }
 
     function setupCamera(){
@@ -378,13 +391,25 @@ document.addEventListener('DOMContentLoaded',()=>{
     function snap(){
         const fl=document.getElementById('flash');fl.style.opacity='1';setTimeout(()=>fl.style.opacity='0',130);
         const vid=document.getElementById('video'),cv=document.getElementById('cap-canvas');
-        cv.width=vid.videoWidth||640;cv.height=vid.videoHeight||480;
-        const ctx=cv.getContext('2d');ctx.translate(cv.width,0);ctx.scale(-1,1);
-        ctx.drawImage(vid,0,0,cv.width,cv.height);
-        const url=cv.toDataURL('image/jpeg',.92);
+        const VW=vid.videoWidth||1280, VH=vid.videoHeight||720;
+        cv.width=VW; cv.height=VH;
+        const ctx=cv.getContext('2d');
+        // Enable high-quality rendering on capture canvas
+        ctx.imageSmoothingEnabled=true;
+        ctx.imageSmoothingQuality='high';
+        // Mirror horizontally (selfie flip)
+        ctx.translate(VW,0); ctx.scale(-1,1);
+        ctx.drawImage(vid,0,0,VW,VH);
+        // Save as lossless PNG for maximum quality
+        const url=cv.toDataURL('image/png');
         photos.push(url);
         const slot=document.getElementById(`th${photos.length-1}`);
-        if(slot){slot.classList.add('filled');const img=document.createElement('img');img.src=url;slot.appendChild(img);}
+        if(slot){
+            slot.classList.add('filled');
+            const img=document.createElement('img');
+            img.src=url;
+            slot.appendChild(img);
+        }
     }
 
     /* ══════════════════════════════════════
@@ -495,72 +520,110 @@ document.addEventListener('DOMContentLoaded',()=>{
     ══════════════════════════════════════ */
     async function renderFinal(){
         const F=FRAMES[frameStyle]||FRAMES.pastel;
-        const PAD=F.pad, GAP=F.gap, TOP=F.top, BOT=F.bot;
-        const PHOTO_W=300, PHOTO_H=Math.round(PHOTO_W*3/4);
 
-        let CW,CH;
+        // ── High-res render: 2.5× scale for crisp, print-quality output ──
+        const SCALE   = 2.5;
+        const PAD     = Math.round(F.pad  * SCALE);
+        const GAP     = Math.round(F.gap  * SCALE);
+        const TOP     = Math.round(F.top  * SCALE);
+        const BOT     = Math.round(F.bot  * SCALE);
+        const BORDER_W= F.border ? Math.round(F.border.width * SCALE) : 0;
+        // Base photo width at 2.5×: 600px logical → 1500px actual
+        const PHOTO_W = Math.round(600 * SCALE);
+        const PHOTO_H = Math.round(PHOTO_W * 3 / 4);
+
+        let CW, CH;
         if(layout==='2x2'){
-            const cols=2,rows=Math.ceil(photos.length/2);
-            CW=PAD*2+PHOTO_W*cols+GAP*(cols-1);
-            CH=TOP+BOT+PHOTO_H*rows+GAP*(Math.max(rows-1,0));
+            const cols=2, rows=Math.ceil(photos.length/2);
+            CW = PAD*2 + PHOTO_W*cols + GAP*(cols-1);
+            CH = TOP + BOT + PHOTO_H*rows + GAP*(Math.max(rows-1,0));
         } else if(layout==='wide'){
-            CW=PAD*2+PHOTO_W*photos.length+GAP*(photos.length-1);
-            CH=TOP+BOT+Math.round(PHOTO_W*3/4);
+            CW = PAD*2 + PHOTO_W*photos.length + GAP*(photos.length-1);
+            CH = TOP + BOT + PHOTO_H;
         } else {
-            CW=PAD*2+PHOTO_W;
-            CH=TOP+BOT+PHOTO_H*photos.length+GAP*(photos.length-1);
+            CW = PAD*2 + PHOTO_W;
+            CH = TOP + BOT + PHOTO_H*photos.length + GAP*(photos.length-1);
         }
 
         const fc=document.getElementById('final-canvas');
-        fc.width=CW;fc.height=CH;
+        fc.width=CW; fc.height=CH;
         const ctx=fc.getContext('2d');
 
-        // Background + decorations
-        F.bg(ctx,CW,CH);
-        if(F.border){ctx.strokeStyle=F.border.color;ctx.lineWidth=F.border.width;ctx.strokeRect(F.border.width/2,F.border.width/2,CW-F.border.width,CH-F.border.width);}
-        F.decorTop(ctx,CW);
+        // ── Enable high-quality rendering ──
+        ctx.imageSmoothingEnabled=true;
+        ctx.imageSmoothingQuality='high';
 
-        // Photos
+        // ── Background ──
+        F.bg(ctx,CW,CH);
+
+        // ── Border ──
+        if(F.border){
+            ctx.strokeStyle=F.border.color;
+            ctx.lineWidth=BORDER_W;
+            ctx.strokeRect(BORDER_W/2,BORDER_W/2,CW-BORDER_W,CH-BORDER_W);
+        }
+
+        // ── Top decoration (scale font sizes to match SCALE) ──
+        ctx.save();
+        ctx.scale(SCALE,SCALE);
+        F.decorTop(ctx, CW/SCALE);
+        ctx.restore();
+
+        // ── Photos ──
         const imgs=await Promise.all(photos.map(loadImg));
-        imgs.forEach((img,i)=>{
-            let dx,dy,dw=PHOTO_W,dh=PHOTO_H;
+        for(let i=0;i<imgs.length;i++){
+            const img=imgs[i];
+            let dx, dy, dw=PHOTO_W, dh=PHOTO_H;
             if(layout==='2x2'){
-                const col=i%2,row=Math.floor(i/2);
-                dx=PAD+col*(PHOTO_W+GAP);dy=TOP+row*(PHOTO_H+GAP);
+                const col=i%2, row=Math.floor(i/2);
+                dx=PAD+col*(PHOTO_W+GAP); dy=TOP+row*(PHOTO_H+GAP);
             } else if(layout==='wide'){
-                dx=PAD+i*(PHOTO_W+GAP);dy=TOP;
+                dx=PAD+i*(PHOTO_W+GAP); dy=TOP;
             } else {
-                dx=PAD;dy=TOP+i*(PHOTO_H+GAP);
+                dx=PAD; dy=TOP+i*(PHOTO_H+GAP);
             }
             ctx.save();
-            rrect(ctx,dx,dy,dw,dh,6);ctx.clip();
-            if(currentFilter!=='none'){
-                // applyFilter internally uses drawImageCover → no squish
-                const filtered=applyFilter(img,dw,dh,FILTERS[currentFilter]);
-                ctx.drawImage(filtered,dx,dy,dw,dh);
-            } else {
-                // Draw with cover crop so portrait photos don't get stretched
-                drawImageCover(ctx,img,dx,dy,dw,dh);
-            }
+            rrect(ctx,dx,dy,dw,dh,Math.round(6*SCALE)); ctx.clip();
+            // Apply filter to a temp canvas, then draw with cover-crop
+            const src = currentFilter!=='none'
+                ? applyFilter(img, img.naturalWidth||dw, img.naturalHeight||dh, FILTERS[currentFilter])
+                : img;
+            ctx.imageSmoothingEnabled=true;
+            ctx.imageSmoothingQuality='high';
+            // Cover-crop: fill slot without stretching
+            const sAR=(src.width||dw)/(src.height||dh), dAR=dw/dh;
+            let sx2=0,sy2=0,sw2=src.width||dw,sh2=src.height||dh;
+            if(sAR>dAR){sw2=Math.round(sh2*dAR);sx2=Math.round(((src.width||dw)-sw2)/2);}
+            else{sh2=Math.round(sw2/dAR);sy2=Math.round(((src.height||dh)-sh2)/2);}
+            ctx.drawImage(src,sx2,sy2,sw2,sh2,dx,dy,dw,dh);
             ctx.restore();
-        });
+        }
 
-        // Stickers from live DOM
+        // ── Stickers (scaled to match HiDPI canvas) ──
         const stage=document.getElementById('sticker-stage');
         const sr=stage.getBoundingClientRect();
-        const sx=CW/sr.width, sy=CH/sr.height;
+        const stSx=CW/sr.width, stSy=CH/sr.height;
         stickerEls.forEach(el=>{
-            const l=parseFloat(el.style.left)||0, t=parseFloat(el.style.top)||0;
+            const l=parseFloat(el.style.left)||0;
+            const t=parseFloat(el.style.top)||0;
             const fs=parseFloat(el.style.fontSize)||32;
-            ctx.font=`${Math.round(fs*Math.min(sx,sy))}px serif`;
+            const scaledFs=Math.round(fs*Math.min(stSx,stSy));
+            ctx.font=`${scaledFs}px serif`;
             ctx.textAlign='left';
-            ctx.fillText(el.textContent,l*sx,(t+fs)*sy*0.92);
+            ctx.textBaseline='top';
+            ctx.fillText(el.textContent, l*stSx, t*stSy);
         });
+        ctx.textBaseline='alphabetic'; // restore default
 
-        F.decorBottom(ctx,CW,CH);
+        // ── Bottom decoration ──
+        ctx.save();
+        ctx.scale(SCALE,SCALE);
+        F.decorBottom(ctx, CW/SCALE, CH/SCALE);
+        ctx.restore();
 
-        // Responsive display size
-        fc.style.maxWidth=Math.min(300,window.innerWidth-80)+'px';
+        // ── Display at logical size (CSS scales it down, retina stays crisp) ──
+        const displayW=Math.min(280,window.innerWidth-48);
+        fc.style.width=displayW+'px';
         fc.style.height='auto';
     }
 
