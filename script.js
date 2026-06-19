@@ -26,6 +26,10 @@ const FILTERS = {
     soft:    'brightness(1.08) saturate(0.7) contrast(0.9)',
     rose:    'sepia(0.3) saturate(1.4) hue-rotate(300deg) brightness(1.05)',
     summer:  'saturate(1.5) brightness(1.1) hue-rotate(15deg)',
+    latte:   'sepia(0.35) brightness(1.08) saturate(0.72) contrast(0.93)',
+    moody:   'brightness(0.78) contrast(1.35) saturate(0.55) hue-rotate(205deg)',
+    lavender:'hue-rotate(258deg) saturate(0.82) brightness(1.06) contrast(0.94)',
+    film:    'sepia(0.22) contrast(1.08) brightness(0.94) saturate(0.88)',
 };
 
 /* ── Frame canvas painters ─────────────────────────────────────────────── */
@@ -155,6 +159,72 @@ const FRAMES = {
         },
         border:{color:'#ddd',width:2}, gap:6, pad:16, top:36, bot:46,
     },
+
+    /* ── New Pinterest-inspired frames ── */
+    polaroid: {
+        bg(ctx,w,h){
+            ctx.fillStyle='#fefefe';ctx.fillRect(0,0,w,h);
+            for(let i=0;i<120;i++){ctx.fillStyle=`rgba(0,0,0,${Math.random()*.012})`;ctx.fillRect(Math.random()*w,Math.random()*h,2,2);}
+        },
+        decorTop(ctx,w){ /* clean white top */ },
+        decorBottom(ctx,w,h){
+            ctx.fillStyle='#fefefe';ctx.fillRect(0,h-70,w,70);
+            ctx.font='italic bold 16px Pacifico,"Comic Sans MS",cursive';ctx.textAlign='center';ctx.fillStyle='#777';ctx.fillText('kachees ♡',w/2,h-38);
+            ctx.font='10px Nunito,sans-serif';ctx.fillStyle='#bbb';ctx.fillText(dateStr(),w/2,h-18);
+        },
+        border:{color:'#e8e8e8',width:2}, gap:8, pad:18, top:18, bot:70,
+    },
+    aesthetic: {
+        bg(ctx,w,h){
+            const g=ctx.createLinearGradient(0,0,0,h);
+            g.addColorStop(0,'#07070f');g.addColorStop(1,'#14082a');
+            ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+            ctx.strokeStyle='rgba(180,0,255,0.07)';ctx.lineWidth=1;
+            for(let x=0;x<w;x+=18){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke();}
+            for(let y=0;y<h;y+=18){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();}
+        },
+        decorTop(ctx,w){
+            ctx.fillStyle='rgba(180,0,255,0.35)';ctx.fillRect(0,32,w,1);
+            ctx.font='bold 10px "Courier New",monospace';ctx.textAlign='center';ctx.fillStyle='#c040ff';ctx.fillText('✦ A E S T H E T I C ✦',w/2,24);
+        },
+        decorBottom(ctx,w,h){
+            ctx.fillStyle='rgba(180,0,255,0.35)';ctx.fillRect(0,h-48,w,1);
+            ctx.font='bold 12px "Courier New",monospace';ctx.textAlign='center';ctx.fillStyle='#c040ff';ctx.fillText('✦ kachees ✦',w/2,h-28);
+            ctx.font='9px "Courier New",monospace';ctx.fillStyle='rgba(192,64,255,0.6)';ctx.fillText(dateStr(),w/2,h-12);
+        },
+        border:{color:'#9000ee',width:2}, gap:6, pad:12, top:38, bot:52,
+    },
+    cottage: {
+        bg(ctx,w,h){
+            const g=ctx.createLinearGradient(0,0,w,h);
+            g.addColorStop(0,'#f6f0e6');g.addColorStop(1,'#e6f0da');
+            ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+            ctx.fillStyle='rgba(100,140,70,0.07)';
+            for(let x=15;x<w;x+=26)for(let y=15;y<h;y+=26){ctx.beginPath();ctx.arc(x,y,3.5,0,Math.PI*2);ctx.fill();}
+        },
+        decorTop(ctx,w){ctx.font='20px serif';ctx.textAlign='center';ctx.fillText('🌿',w*.15,30);ctx.fillText('❀',w*.5,26);ctx.fillText('🌿',w*.85,30);},
+        decorBottom(ctx,w,h){
+            ctx.fillStyle='rgba(100,140,70,0.18)';ctx.fillRect(0,h-50,w,50);
+            ctx.font='bold 12px Georgia,serif';ctx.textAlign='center';ctx.fillStyle='#4e7030';ctx.fillText('❀ kachees ❀',w/2,h-28);
+            ctx.font='10px Georgia,serif';ctx.fillStyle='rgba(78,112,48,0.65)';ctx.fillText(dateStr(),w/2,h-12);
+        },
+        border:{color:'#8ab860',width:2.5}, gap:7, pad:14, top:42, bot:50,
+    },
+    lomo: {
+        bg(ctx,w,h){
+            ctx.fillStyle='#080604';ctx.fillRect(0,0,w,h);
+            for(let i=0;i<300;i++){ctx.fillStyle=`rgba(255,255,255,${Math.random()*.025})`;ctx.fillRect(Math.random()*w,Math.random()*h,1,1);}
+        },
+        decorTop(ctx,w){
+            ctx.font='bold 9px "Courier New",monospace';ctx.textAlign='center';
+            ctx.fillStyle='#cc4400';ctx.fillText('LOMO · LC-A+ · ISO 400',w/2,22);
+        },
+        decorBottom(ctx,w,h){
+            ctx.font='bold 9px "Courier New",monospace';ctx.textAlign='center';
+            ctx.fillStyle='#cc4400';ctx.fillText('kachees · '+new Date().getFullYear(),w/2,h-18);
+        },
+        border:{color:'#993300',width:3}, gap:5, pad:10, top:32, bot:34,
+    },
 };
 
 /* ── Helpers ───────────────────────────────────────────────────────────── */
@@ -172,10 +242,20 @@ function rrect(ctx,x,y,w,h,r){
 function loadImg(src){
     return new Promise((ok,fail)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=fail;i.src=src;});
 }
+/* drawImageCover — fixes foto gepeng: crops image to fill box like CSS object-fit:cover */
+function drawImageCover(ctx,img,dx,dy,dw,dh){
+    const iw=img.naturalWidth||img.width||dw;
+    const ih=img.naturalHeight||img.height||dh;
+    const imgR=iw/ih, boxR=dw/dh;
+    let sx=0,sy=0,sw=iw,sh=ih;
+    if(imgR>boxR){sw=ih*boxR;sx=(iw-sw)/2;}
+    else{sh=iw/boxR;sy=(ih-sh)/2;}
+    ctx.drawImage(img,sx,sy,sw,sh,dx,dy,dw,dh);
+}
 function applyFilter(img,w,h,f){
     const c=document.createElement('canvas');c.width=w;c.height=h;
     const x=c.getContext('2d');if(f)x.filter=f;
-    x.drawImage(img,0,0,w,h);return c;
+    drawImageCover(x,img,0,0,w,h);return c;
 }
 function showScreen(id){
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -454,8 +534,14 @@ document.addEventListener('DOMContentLoaded',()=>{
             }
             ctx.save();
             rrect(ctx,dx,dy,dw,dh,6);ctx.clip();
-            const filtered=currentFilter!=='none'?applyFilter(img,dw,dh,FILTERS[currentFilter]):null;
-            ctx.drawImage(filtered||img,dx,dy,dw,dh);
+            if(currentFilter!=='none'){
+                // applyFilter internally uses drawImageCover → no squish
+                const filtered=applyFilter(img,dw,dh,FILTERS[currentFilter]);
+                ctx.drawImage(filtered,dx,dy,dw,dh);
+            } else {
+                // Draw with cover crop so portrait photos don't get stretched
+                drawImageCover(ctx,img,dx,dy,dw,dh);
+            }
             ctx.restore();
         });
 

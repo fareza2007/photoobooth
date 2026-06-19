@@ -233,6 +233,28 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); min-
 .min-slot { background:#eee;border:1px solid #ccc !important; }
 .fp-bot-minimal { background:white;color:#888;border-top:1px solid #ddd; }
 
+/* Polaroid */
+.fp-polaroid { background:#fefefe;border:1.5px solid #e8e8e8;padding-bottom:2px; }
+.pol-slot { background:#f4f4f4;border:1px solid #e8e8e8 !important; }
+.fp-bot-polaroid { background:#fefefe;color:#999;font-family:'Pacifico',cursive;letter-spacing:1px;padding:6px 0; }
+
+/* Aesthetic dark */
+.fp-aesthetic { background:linear-gradient(160deg,#07070f,#14082a); }
+.fp-top-aes { color:#c040ff;font-size:.62rem;font-weight:900;letter-spacing:4px; }
+.aes-slot { background:rgba(100,0,200,.35);border:1px solid rgba(180,0,255,.55) !important; }
+.fp-bot-aesthetic { background:rgba(140,0,220,.2);color:#c040ff;letter-spacing:2px; }
+
+/* Cottagecore */
+.fp-cottage { background:linear-gradient(160deg,#f6f0e6,#e6f0da); }
+.cot-slot { background:rgba(255,255,255,.55);border:1px solid rgba(100,140,70,.4) !important; }
+.fp-bot-cottage { background:rgba(100,140,70,.18);color:#4e7030;font-family:Georgia,serif; }
+
+/* Lomo */
+.fp-lomo { background:#080604; }
+.fp-top-lomo { color:#cc4400;font-size:.58rem;font-weight:900;letter-spacing:2px; }
+.lomo-slot { background:#1a1208;border:1px solid #993300 !important; }
+.fp-bot-lomo { background:#0f0a04;color:#cc4400;font-size:.58rem;letter-spacing:1px; }
+
 /* ══════════════════════════════════════════════
    SCREEN 3 – CAMERA
 ══════════════════════════════════════════════ */
@@ -361,6 +383,10 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); min-
 .ft-soft    { background:linear-gradient(135deg,#f8f0f4,#ede8f5); }
 .ft-rose    { background:linear-gradient(135deg,#ffb3b3,#ff8080); }
 .ft-summer  { background:linear-gradient(135deg,#ffdd77,#ff9933); }
+.ft-latte   { background:linear-gradient(135deg,#e8d4b0,#c8a870); }
+.ft-moody   { background:linear-gradient(135deg,#1a1a2e,#4a1060); }
+.ft-lavender{ background:linear-gradient(135deg,#d8b8f0,#a880cc); }
+.ft-film    { background:linear-gradient(135deg,#c8b898,#988060); }
 
 /* ── Sticker Stage ────────────────────── */
 .sticker-preview-wrap { align-items:flex-start; }
