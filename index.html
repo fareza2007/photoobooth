@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kachees – Cute Photobooth ✨</title>
+    <meta name="description" content="Kachees – snap your aesthetic 4-cuts with fun frames, filters & stickers!">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,800;0,900;1,800&family=Pacifico&family=Permanent+Marker&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== SCREEN 1: LANDING ===== -->
+<div id="screen-landing" class="screen active">
+    <div class="bubbles-bg">
+        <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+        <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+    </div>
+    <div class="landing-layout">
+        <div class="landing-left">
+            <div class="tagline-badge">📸 viral aesthetic booth</div>
+            <h1 class="landing-tagline">Your cutest<br><span>photos ever</span></h1>
+            <p class="landing-desc">Snap adorable moments with cute frames, dreamy filters & fun stickers — download your strip instantly!</p>
+            <button id="btn-start" class="cta-btn">
+                <span>✨</span> Start Shooting <span>→</span>
+            </button>
+            <div class="feature-pills">
+                <span class="pill">🖼️ Cute Frames</span>
+                <span class="pill">🎨 Filters</span>
+                <span class="pill">🌟 Stickers</span>
+                <span class="pill">💾 Download</span>
+            </div>
+        </div>
+        <div class="landing-right">
+            <div class="logo-area">
+                <div class="logo-glow"></div>
+                <div class="logo-text">kachees</div>
+                <div class="logo-sub">photobooth</div>
+                <div class="camera-icon-big">📷</div>
+                <div class="floating-stickers">
+                    <span class="fs fs1">🌸</span><span class="fs fs2">⭐</span>
+                    <span class="fs fs3">🦋</span><span class="fs fs4">🎀</span>
+                    <span class="fs fs5">💕</span><span class="fs fs6">🌈</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SCREEN 2: GRID COUNT ===== -->
+<div id="screen-grid" class="screen">
+    <div class="screen-header">
+        <button class="back-btn" data-target="screen-landing">← Back</button>
+        <div class="screen-logo">kachees</div>
+        <div style="width:80px"></div>
+    </div>
+    <div class="screen-body">
+        <h2 class="section-title">How many shots? 📷</h2>
+        <p class="section-sub">Pick your layout — then choose a cute frame style!</p>
+        <div class="grid-options">
+
+            <div class="grid-card" data-shots="2" data-layout="strip">
+                <div class="grid-preview gp-strip-2">
+                    <div class="gp-slot"></div><div class="gp-slot"></div>
+                </div>
+                <div class="grid-name">💑 Duo Strip</div>
+                <div class="grid-shots">2 shots · vertical</div>
+                <span class="grid-tag">Romantic</span>
+            </div>
+
+            <div class="grid-card" data-shots="3" data-layout="strip">
+                <div class="grid-preview gp-strip-3">
+                    <div class="gp-slot"></div><div class="gp-slot"></div><div class="gp-slot"></div>
+                </div>
+                <div class="grid-name">🎶 Triple Strip</div>
+                <div class="grid-shots">3 shots · vertical</div>
+                <span class="grid-tag">BFF Vibes</span>
+            </div>
+
+            <div class="grid-card popular" data-shots="4" data-layout="strip">
+                <div class="popular-badge">⭐ Viral Pick</div>
+                <div class="grid-preview gp-strip-4">
+                    <div class="gp-slot"></div><div class="gp-slot"></div>
+                    <div class="gp-slot"></div><div class="gp-slot"></div>
+                </div>
+                <div class="grid-name">✨ Classic Strip</div>
+                <div class="grid-shots">4 shots · vertical</div>
+                <span class="grid-tag">인생네컷 Style</span>
+            </div>
+
+            <div class="grid-card" data-shots="4" data-layout="2x2">
+                <div class="grid-preview gp-2x2">
+                    <div class="gp-slot"></div><div class="gp-slot"></div>
+                    <div class="gp-slot"></div><div class="gp-slot"></div>
+                </div>
+                <div class="grid-name">🌸 2×2 Square</div>
+                <div class="grid-shots">4 shots · grid</div>
+                <span class="grid-tag">Aesthetic</span>
+            </div>
+
+            <div class="grid-card" data-shots="3" data-layout="wide">
+                <div class="grid-preview gp-wide-3">
+                    <div class="gp-slot"></div><div class="gp-slot"></div><div class="gp-slot"></div>
+                </div>
+                <div class="grid-name">🎬 Wide Strip</div>
+                <div class="grid-shots">3 shots · horizontal</div>
+                <span class="grid-tag">Cinematic</span>
+            </div>
+
+            <div class="grid-card" data-shots="5" data-layout="mix">
+                <div class="grid-preview gp-mix-5">
+                    <div class="gp-slot gp-big"></div>
+                    <div class="gp-side"><div class="gp-slot"></div><div class="gp-slot"></div></div>
+                    <div class="gp-slot"></div><div class="gp-slot"></div>
+                </div>
+                <div class="grid-name">🎉 Party Mix</div>
+                <div class="grid-shots">5 shots · mixed</div>
+                <span class="grid-tag">Full Gang</span>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ===== SCREEN 2b: FRAME STYLE ===== -->
+<div id="screen-frame-style" class="screen">
+    <div class="screen-header">
+        <button class="back-btn" data-target="screen-grid">← Back</button>
+        <div class="screen-logo">kachees</div>
+        <div style="width:80px"></div>
+    </div>
+    <div class="screen-body">
+        <h2 class="section-title">Choose a frame style 🖼️</h2>
+        <p class="section-sub">Each style has unique decorations and vibes!</p>
+        <div class="frame-style-options" id="frame-style-options">
+
+            <!-- Pastel Dream -->
+            <div class="frame-style-card" data-style="pastel">
+                <div class="fsc-preview pastel-prev">
+                    <div class="fsc-deco-top">🌸 ⭐ 🌷</div>
+                    <div class="fsc-slots">
+                        <div class="fsc-slot"></div>
+                        <div class="fsc-slot"></div>
+                        <div class="fsc-slot"></div>
+                    </div>
+                    <div class="fsc-footer-bar pastel-bar">kachees ✨</div>
+                </div>
+                <div class="fsc-name">🌸 Pastel Dream</div>
+                <div class="fsc-desc">Soft pink flowers & stars</div>
+            </div>
+
+            <!-- Y2K Retro -->
+            <div class="frame-style-card" data-style="y2k">
+                <div class="fsc-preview y2k-prev">
+                    <div class="fsc-deco-top y2k-top">💿 ✦ ★</div>
+                    <div class="fsc-slots y2k-slots">
+                        <div class="fsc-slot y2k-slot"></div>
+                        <div class="fsc-slot y2k-slot"></div>
+                        <div class="fsc-slot y2k-slot"></div>
+                    </div>
+                    <div class="fsc-footer-bar y2k-bar">★ kachees ★</div>
+                </div>
+                <div class="fsc-name">💿 Y2K Retro</div>
+                <div class="fsc-desc">Bold black, stars & grunge</div>
+            </div>
+
+            <!-- Vintage Film -->
+            <div class="frame-style-card" data-style="film">
+                <div class="fsc-preview film-prev">
+                    <div class="film-holes-top"><span></span><span></span><span></span><span></span><span></span></div>
+                    <div class="fsc-slots film-slots">
+                        <div class="fsc-slot film-slot"></div>
+                        <div class="fsc-slot film-slot"></div>
+                        <div class="fsc-slot film-slot"></div>
+                    </div>
+                    <div class="film-holes-bot"><span></span><span></span><span></span><span></span><span></span></div>
+                    <div class="fsc-footer-bar film-bar">📽️ kachees · 2024</div>
+                </div>
+                <div class="fsc-name">📽️ Vintage Film</div>
+                <div class="fsc-desc">Classic film strip aesthetic</div>
+            </div>
+
+            <!-- Coquette -->
+            <div class="frame-style-card" data-style="coquette">
+                <div class="fsc-preview coquette-prev">
+                    <div class="fsc-deco-top coquette-top">🎀 ♡ 🎀</div>
+                    <div class="fsc-slots">
+                        <div class="fsc-slot coq-slot"></div>
+                        <div class="fsc-slot coq-slot"></div>
+                        <div class="fsc-slot coq-slot"></div>
+                    </div>
+                    <div class="fsc-footer-bar coquette-bar">♡ kachees ♡</div>
+                </div>
+                <div class="fsc-name">🎀 Coquette</div>
+                <div class="fsc-desc">Ribbons, lace & soft roses</div>
+            </div>
+
+            <!-- Matcha Calm -->
+            <div class="frame-style-card" data-style="matcha">
+                <div class="fsc-preview matcha-prev">
+                    <div class="fsc-deco-top matcha-top">🍵 🌿 ☘️</div>
+                    <div class="fsc-slots">
+                        <div class="fsc-slot matcha-slot"></div>
+                        <div class="fsc-slot matcha-slot"></div>
+                        <div class="fsc-slot matcha-slot"></div>
+                    </div>
+                    <div class="fsc-footer-bar matcha-bar">🍵 kachees</div>
+                </div>
+                <div class="fsc-name">🍵 Matcha Calm</div>
+                <div class="fsc-desc">Earthy greens & cozy vibes</div>
+            </div>
+
+            <!-- Starry Night -->
+            <div class="frame-style-card" data-style="starry">
+                <div class="fsc-preview starry-prev">
+                    <div class="fsc-deco-top starry-top">🌙 ✦ ⭐</div>
+                    <div class="fsc-slots">
+                        <div class="fsc-slot starry-slot"></div>
+                        <div class="fsc-slot starry-slot"></div>
+                        <div class="fsc-slot starry-slot"></div>
+                    </div>
+                    <div class="fsc-footer-bar starry-bar">✦ kachees ✦</div>
+                </div>
+                <div class="fsc-name">🌙 Starry Night</div>
+                <div class="fsc-desc">Dark sky with golden stars</div>
+            </div>
+
+            <!-- Bubblegum -->
+            <div class="frame-style-card" data-style="bubblegum">
+                <div class="fsc-preview bubblegum-prev">
+                    <div class="fsc-deco-top bubblegum-top">🍬 💜 🍬</div>
+                    <div class="fsc-slots">
+                        <div class="fsc-slot bubble-slot"></div>
+                        <div class="fsc-slot bubble-slot"></div>
+                        <div class="fsc-slot bubble-slot"></div>
+                    </div>
+                    <div class="fsc-footer-bar bubblegum-bar">🍬 kachees 🍬</div>
+                </div>
+                <div class="fsc-name">🍬 Bubblegum Pop</div>
+                <div class="fsc-desc">Fun & bold neon colors</div>
+            </div>
+
+            <!-- Minimal White -->
+            <div class="frame-style-card" data-style="minimal">
+                <div class="fsc-preview minimal-prev">
+                    <div class="fsc-deco-top minimal-top">· · ·</div>
+                    <div class="fsc-slots">
+                        <div class="fsc-slot minimal-slot"></div>
+                        <div class="fsc-slot minimal-slot"></div>
+                        <div class="fsc-slot minimal-slot"></div>
+                    </div>
+                    <div class="fsc-footer-bar minimal-bar">kachees</div>
+                </div>
+                <div class="fsc-name">🤍 Minimal Clean</div>
+                <div class="fsc-desc">Elegant white & grey</div>
+            </div>
+
+        </div>
+        <button id="btn-go-camera" class="cta-btn" style="display:none;margin-top:20px;">
+            📸 Start Shooting!
+        </button>
+    </div>
+</div>
+
+<!-- ===== SCREEN 3: CAMERA ===== -->
+<div id="screen-camera" class="screen">
+    <div class="screen-header">
+        <button class="back-btn" data-target="screen-frame-style">← Back</button>
+        <div class="screen-logo">kachees</div>
+        <div id="shot-counter" class="shot-counter">📷 1 / 4</div>
+    </div>
+    <div class="camera-body">
+        <div class="video-wrap">
+            <video id="video" autoplay playsinline></video>
+            <div id="countdown" class="countdown-overlay hidden"></div>
+            <div id="flash" class="flash-overlay"></div>
+        </div>
+        <div class="thumbnail-strip" id="thumbnail-strip"></div>
+        <div class="camera-controls">
+            <button id="btn-shoot" class="shoot-btn">
+                <span class="shoot-ring"></span>
+                <span class="shoot-inner">📸</span>
+            </button>
+        </div>
+        <p class="shoot-hint" id="shoot-hint">Press the button to start your 📸 sequence!</p>
+    </div>
+</div>
+
+<!-- ===== SCREEN 4: FILTER ===== -->
+<div id="screen-filter" class="screen">
+    <div class="screen-header">
+        <div class="screen-logo">kachees</div>
+        <div class="step-indicator">
+            <span class="si active">Filter</span><span>→</span>
+            <span class="si">Sticker</span><span>→</span>
+            <span class="si">Save</span>
+        </div>
+    </div>
+    <div class="filter-body">
+        <h2 class="section-title">Pick a filter ✨</h2>
+        <div class="filter-preview-container">
+            <div id="filter-strip-preview" class="filter-strip-preview"></div>
+        </div>
+        <div class="filter-scroll">
+            <div class="filter-list">
+                <div class="filter-item active" data-filter="none"><div class="filter-thumb ft-none"></div><span>Original</span></div>
+                <div class="filter-item" data-filter="vintage"><div class="filter-thumb ft-vintage"></div><span>Vintage</span></div>
+                <div class="filter-item" data-filter="dreamy"><div class="filter-thumb ft-dreamy"></div><span>Dreamy 🌸</span></div>
+                <div class="filter-item" data-filter="noir"><div class="filter-thumb ft-noir"></div><span>Noir 🖤</span></div>
+                <div class="filter-item" data-filter="golden"><div class="filter-thumb ft-golden"></div><span>Golden ✨</span></div>
+                <div class="filter-item" data-filter="cool"><div class="filter-thumb ft-cool"></div><span>Cool 🫧</span></div>
+                <div class="filter-item" data-filter="vivid"><div class="filter-thumb ft-vivid"></div><span>Vivid 🌈</span></div>
+                <div class="filter-item" data-filter="soft"><div class="filter-thumb ft-soft"></div><span>Soft ☁️</span></div>
+                <div class="filter-item" data-filter="rose"><div class="filter-thumb ft-rose"></div><span>Rose 🌹</span></div>
+                <div class="filter-item" data-filter="summer"><div class="filter-thumb ft-summer"></div><span>Summer 🌞</span></div>
+            </div>
+        </div>
+        <button id="btn-to-sticker" class="cta-btn">Next: Add Stickers 🌟</button>
+    </div>
+</div>
+
+<!-- ===== SCREEN 5: STICKER ===== -->
+<div id="screen-sticker" class="screen">
+    <div class="screen-header">
+        <button class="back-btn" data-target="screen-filter">← Back</button>
+        <div class="screen-logo">kachees</div>
+        <div class="step-indicator">
+            <span class="si done">Filter</span><span>→</span>
+            <span class="si active">Sticker</span><span>→</span>
+            <span class="si">Save</span>
+        </div>
+    </div>
+    <div class="sticker-body">
+        <h2 class="section-title">Add stickers! 🎀</h2>
+        <div class="sticker-workspace">
+            <div class="sticker-canvas-wrap">
+                <div id="sticker-canvas" class="sticker-canvas">
+                    <div id="sticker-strip-display" class="sticker-strip-display"></div>
+                    <div id="sticker-layer" class="sticker-layer"></div>
+                </div>
+            </div>
+            <div class="sticker-panel">
+                <div class="sticker-categories">
+                    <button class="scat-btn active" data-cat="cute">🌸 Cute</button>
+                    <button class="scat-btn" data-cat="food">🍰 Food</button>
+                    <button class="scat-btn" data-cat="nature">🌿 Nature</button>
+                    <button class="scat-btn" data-cat="vibe">💫 Vibe</button>
+                    <button class="scat-btn" data-cat="text">💬 Text</button>
+                </div>
+                <div class="sticker-grid" id="sticker-grid"></div>
+                <div class="sticker-size-row">
+                    <label>Size:</label>
+                    <input type="range" id="sticker-size" min="1" max="4" step="0.5" value="2">
+                </div>
+                <div class="sticker-actions">
+                    <button id="btn-undo-sticker" class="sec-btn">↩️ Undo</button>
+                    <button id="btn-clear-sticker" class="sec-btn">🗑️ Clear</button>
+                </div>
+            </div>
+        </div>
+        <button id="btn-to-save" class="cta-btn">Next: Save Photos 💾</button>
+    </div>
+</div>
+
+<!-- ===== SCREEN 6: SAVE ===== -->
+<div id="screen-save" class="screen">
+    <div class="screen-header">
+        <button class="back-btn" data-target="screen-sticker">← Back</button>
+        <div class="screen-logo">kachees</div>
+        <div class="step-indicator">
+            <span class="si done">Filter</span><span>→</span>
+            <span class="si done">Sticker</span><span>→</span>
+            <span class="si active">Save</span>
+        </div>
+    </div>
+    <div class="save-body">
+        <h2 class="section-title">Your strip is ready! 🎉</h2>
+        <div class="save-layout">
+            <div class="final-strip-outer" id="final-strip-outer">
+                <canvas id="final-canvas"></canvas>
+            </div>
+            <div class="save-actions">
+                <button id="btn-download" class="cta-btn download-btn">📥 Download Strip</button>
+                <button id="btn-retake" class="sec-btn">🔄 Take New Photos</button>
+                <p class="share-hint">✨ Share to TikTok, IG Stories, or send to your bestie!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<canvas id="capture-canvas" style="display:none;"></canvas>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
